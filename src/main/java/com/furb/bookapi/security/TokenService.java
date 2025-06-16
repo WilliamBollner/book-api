@@ -13,12 +13,18 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-@Service
+@Service // Indica que é um serviço gerenciado pelo Spring
 public class TokenService {
 
-	@Value("${api.security.token.secret}")
+	@Value("${api.security.token.secret}") // Injeta a chave secreta do application.properties
 	private String secret;
 
+	/**
+     * Gera um token JWT para o usuário
+     * @param user Objeto do usuário autenticado
+     * @return Token JWT assinado
+     * @throws RuntimeException Se falhar na geração do token
+     */
 	public String gerenateToken(User user) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -30,6 +36,12 @@ public class TokenService {
 		}
 	}
 
+	/**
+     * Valida um token JWT
+     * @param token Token a ser validado
+     * @return Username do subject se o token for válido
+     * @throws RuntimeException Se o token for inválido ou expirado
+     */
 	public String validateToken(String token) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
@@ -41,6 +53,10 @@ public class TokenService {
 		}
 	}
 
+	/**
+     * Gera data de expiração (5 minutos no futuro)
+     * @return Instant com a data/hora de expiração
+     */
 	private Instant generateExpirationDate() {
 		return LocalDateTime.now().plusMinutes(5).toInstant(ZoneOffset.of("-03:00"));
 	}

@@ -18,8 +18,8 @@ import com.furb.bookapi.service.BookService;
 
 import jakarta.persistence.EntityNotFoundException;
 
-@RestController
-@RequestMapping("/api/books")
+@RestController // Indica que é um controlador REST
+@RequestMapping("/api/books") // Mapeia todas as rotas para /api/books
 public class BookController {
 
     private final BookService service;
@@ -28,11 +28,13 @@ public class BookController {
         this.service = service;
     }
 
+    // GET /api/books - Lista todos os livros
     @GetMapping
     public List<Book> getAll() {
         return service.findAll();
     }
 
+    // GET /api/books/{id} - Busca livro por ID
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
         try {
@@ -42,6 +44,7 @@ public class BookController {
         }
     }
 
+    // POST /api/books - Cria novo livro
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Book book) {
         try {
@@ -51,6 +54,7 @@ public class BookController {
         }
     }
 
+    // PUT /api/books/{id} - Atualiza livro existente
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Book book) {
         try {
@@ -60,6 +64,7 @@ public class BookController {
         }
     }
 
+    // DELETE /api/books/{id} - Remove livro
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         try {

@@ -18,14 +18,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+// Indica que é um componente gerenciado pelo Spring
 @Component
 public class TokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private TokenService tokenService;
+    private TokenService tokenService; // Serviço para validar tokens
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // Repositório de usuários
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -56,6 +57,7 @@ public class TokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    // Método auxiliar para extrair token do cabeçalho
     private String extractToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         if (StringUtils.hasText(header) && header.startsWith("Bearer ")) {

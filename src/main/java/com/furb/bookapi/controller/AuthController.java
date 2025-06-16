@@ -20,13 +20,14 @@ import com.furb.bookapi.security.TokenService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@RestController
-@RequestMapping("/api/auth")
+@RestController // Indica que esta classe é um controlador REST
+@RequestMapping("/api/auth") // Mapeia todas as rotas deste controller para /api/auth
 public class AuthController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
+	// Handler padrão do Spring Security para logout
 	SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
 
 	@Autowired
@@ -34,6 +35,7 @@ public class AuthController {
 	@Autowired
 	private TokenService tokenService;
 
+	// Endpoint para login
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponseDTO> login(@RequestBody @Validated AuthDTO data) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
@@ -43,6 +45,7 @@ public class AuthController {
 		return ResponseEntity.ok(new LoginResponseDTO(token));
 	}
 
+	// Endpoint para registrar novos usuários
 	@PostMapping("/register")
 	public ResponseEntity<User> register(@RequestBody @Validated User user) {
 		if (this.userRepository.findByUsername(user.getUsername()) != null)
@@ -55,6 +58,7 @@ public class AuthController {
 		return ResponseEntity.ok().build();
 	}
 
+	// Endpoint para logout
 	@PostMapping("/logout")
 	public ResponseEntity<String> logout(HttpServletRequest request) {
 		return ResponseEntity.ok("Logged out successfully");

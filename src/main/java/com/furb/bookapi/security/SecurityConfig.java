@@ -13,12 +13,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
+@Configuration // Indica que esta classe contém configurações do Spring
 public class SecurityConfig {
 	
+    // Filtro customizado para validar tokens JWT
     @Autowired
     private TokenFilter tokenFilter;
 
+    // Configuração principal da cadeia de filtros de segurança
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -32,11 +34,13 @@ public class SecurityConfig {
             .build();
     }
     
+    // Configura o gerenciador de autenticação padrão
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // Configura o encoder de senhas (usando BCrypt)
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
